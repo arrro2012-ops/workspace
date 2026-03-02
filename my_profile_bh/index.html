@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍길동 - 프론트엔드 개발자</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #F5F3EF;
+            --surface: #EDEAE4;
+            --text: #1a1a1a;
+            --muted: #888;
+            --accent: #1a1a1a;
+        }
+
+        * {
+            color: var(--text);
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* Dot pattern background */
+        .dot-pattern {
+            background-image: radial-gradient(circle, var(--text) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: 0 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Outline text for hero */
+        .hero-outline {
+            -webkit-text-stroke: 2px var(--text);
+            color: transparent;
+            font-weight: 900;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 1;
+        }
+
+        .hero-bold {
+            color: var(--text);
+            font-weight: 900;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 1;
+        }
+
+        .hero-subtitle {
+            color: var(--text);
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* Navigation styling */
+        #navbar {
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        #navbar.scrolled {
+            background-color: rgba(245, 243, 239, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            opacity: 0.6;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--text);
+            opacity: 0.3;
+        }
+
+        /* Large decorative numbers */
+        .large-number {
+            font-size: 8rem;
+            font-weight: 900;
+            -webkit-text-stroke: 1.5px var(--text);
+            color: transparent;
+            line-height: 1;
+            opacity: 0.1;
+        }
+
+        /* Skill badge styling */
+        .skill-badge {
+            border: 1px solid var(--text);
+            color: var(--text);
+            padding: 0.75rem 1.25rem;
+            background-color: transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-badge:hover {
+            background-color: var(--text);
+            color: var(--bg);
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background-color: var(--text);
+            opacity: 0.15;
+            margin: 4rem 0;
+        }
+
+        /* Card hover effect */
+        .project-card {
+            transition: all 0.3s ease;
+            background-color: var(--surface);
+            border: 1px solid rgba(26, 26, 26, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(26, 26, 26, 0.08);
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--bg);
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--accent);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--accent);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--text);
+            color: var(--text);
+            padding: 0.5rem 1.25rem;
+            background-color: transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--text);
+            color: var(--bg);
+        }
+
+        /* Quote styling */
+        .quote-mark {
+            font-size: 4rem;
+            line-height: 1;
+            opacity: 0.2;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* Section numbers */
+        .section-number {
+            font-size: 5rem;
+            font-weight: 900;
+            -webkit-text-stroke: 1.5px var(--text);
+            color: transparent;
+            line-height: 1;
+            opacity: 0.08;
+        }
+
+        /* Contact section dark mode */
+        #contact {
+            background-color: #1a1a1a;
+        }
+
+        #contact,
+        #contact * {
+            color: #FFFFF0; /* ivory */
+        }
+
+        #contact .section-number {
+            color: transparent !important;
+            -webkit-text-stroke: 1.5px #FFFFF0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-outline, .hero-bold {
+                font-size: 2.5rem;
+            }
+
+            .large-number {
+                font-size: 4rem;
+            }
+
+            .section-number {
+                font-size: 3rem;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+    <!-- Header Navigation -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="text-lg font-light tracking-wide">홍<span class="font-bold">.</span>길동<span class="font-bold">.</span></div>
+            <ul class="flex gap-1 sm:gap-4 text-sm items-center">
+                <li><a href="#about" class="nav-link px-3 py-2">소개</a></li>
+                <li><div class="nav-divider hidden sm:block"></div></li>
+                <li><a href="#skills" class="nav-link px-3 py-2">기술</a></li>
+                <li><div class="nav-divider hidden sm:block"></div></li>
+                <li><a href="#projects" class="nav-link px-3 py-2">프로젝트</a></li>
+                <li><div class="nav-divider hidden sm:block"></div></li>
+                <li><a href="#contact" class="nav-link px-3 py-2">연락처</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section - Split Screen -->
+    <section id="hero" class="min-h-screen pt-20 grid grid-cols-5 relative overflow-hidden">
+        <!-- Left Panel - Image -->
+        <div class="col-span-2 bg-no-repeat bg-cover relative" style="background-color: var(--surface);">
+            <div class="absolute inset-0 dot-pattern"></div>
+
+            <!-- Avatar Placeholder -->
+            <div class="h-full flex items-center justify-center relative z-10">
+                <div class="w-56 h-56 rounded-2xl flex items-center justify-center text-6xl font-light opacity-40">
+                    <svg viewBox="0 0 100 100" class="w-32 h-32" fill="currentColor">
+                        <circle cx="50" cy="30" r="20"/>
+                        <path d="M 30 55 Q 30 45 50 45 Q 70 45 70 55 L 70 80 Q 70 85 65 85 L 35 85 Q 30 85 30 80 Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Large number "01" -->
+            <div class="absolute bottom-8 left-8 large-number z-20">01</div>
+
+            <!-- Brand text -->
+            <div class="absolute top-12 left-8 text-sm font-light tracking-widest z-20 opacity-60">홍길동.</div>
+        </div>
+
+        <!-- Right Panel - Content -->
+        <div class="col-span-3 flex flex-col justify-center px-12 py-20 relative">
+            <!-- Hero Text -->
+            <div class="mb-12">
+                <div class="flex flex-wrap items-baseline gap-3 mb-6">
+                    <span class="hero-outline">프론트</span>
+                    <span class="hero-bold">엔드.</span>
+                </div>
+                <p class="hero-subtitle font-light leading-relaxed max-w-lg">
+                    개발자입니다. 사용자 경험을 중시하고 깔끔한 인터페이스를 만드는 것을 좋아합니다.
+                </p>
+            </div>
+
+            <!-- Skills List -->
+            <div class="mb-12">
+                <p class="text-xs tracking-widest uppercase font-light mb-6 opacity-60">기술 스택</p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">HTML</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">CSS</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">JavaScript</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">React</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">Tailwind CSS</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">●</span>
+                        <span class="text-sm">Git</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="mb-12">
+                <a href="#projects" class="btn-primary inline-block text-sm">프로젝트 보기</a>
+            </div>
+
+            <!-- Quote -->
+            <div class="border-t border-b border-current py-6 border-opacity-20 max-w-lg">
+                <div class="quote-mark">"</div>
+                <p class="text-sm leading-relaxed font-light">
+                    웹 표준을 준수하면서도 항상 사용자의 입장에서 생각하는 개발을 지향합니다.
+                </p>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 right-8 scroll-indicator text-2xl">↓</div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-4 md:px-8" style="background-color: var(--bg);">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-5 gap-8 md:gap-12 items-start">
+                <!-- Section number and title -->
+                <div class="col-span-2">
+                    <div class="relative mb-8">
+                        <div class="section-number">02</div>
+                        <h2 class="text-3xl md:text-4xl font-light -mt-12 relative z-10">소개</h2>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="col-span-3">
+                    <p class="text-lg leading-relaxed font-light mb-6">
+                        사용자 경험을 중시하는 프론트엔드 개발자입니다. 깔끔하고 직관적인 UI를 만드는 것을 좋아합니다. 새로운 기술을 배우고 적용하는 것을 즐깁니다.
+                    </p>
+                    <p class="text-lg leading-relaxed font-light">
+                        저는 웹 표준을 준수하고 성능 최적화에 집중하면서도, 항상 사용자의 입장에서 생각하는 개발을 지향합니다. 팀 협업을 소중히 여기며, 깨끗한 코드와 명확한 커뮤니케이션을 중요하게 생각합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider max-w-7xl mx-auto mt-20"></div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 px-4 md:px-8" style="background-color: var(--surface);">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-5 gap-8 md:gap-12">
+                <!-- Section title -->
+                <div class="col-span-2">
+                    <div class="relative">
+                        <div class="section-number">03</div>
+                        <h2 class="text-3xl md:text-4xl font-light -mt-12 relative z-10">기술</h2>
+                    </div>
+                </div>
+
+                <!-- Skills grid -->
+                <div class="col-span-3">
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge">HTML</span>
+                        <span class="skill-badge">CSS</span>
+                        <span class="skill-badge">JavaScript</span>
+                        <span class="skill-badge">React</span>
+                        <span class="skill-badge">Tailwind CSS</span>
+                        <span class="skill-badge">Git</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-4 md:px-8" style="background-color: var(--bg);">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <div class="relative">
+                    <div class="section-number">04</div>
+                    <h2 class="text-3xl md:text-4xl font-light -mt-12 relative z-10">포트폴리오</h2>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Card 1 -->
+                <div class="project-card p-0 rounded-lg overflow-hidden">
+                    <div class="w-full h-48 flex items-center justify-center text-4xl font-light opacity-20">
+                        [이미지]
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-light mb-3">반응형 포트폴리오 사이트</h3>
+                        <p class="text-sm leading-relaxed font-light mb-6 opacity-70">
+                            HTML, CSS, JavaScript를 사용하여 만든 개인 포트폴리오 웹사이트입니다. 모든 기기에서 완벽하게 작동합니다.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#" class="btn-outline text-xs">GitHub</a>
+                            <a href="#" class="btn-outline text-xs">Live</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="project-card p-0 rounded-lg overflow-hidden">
+                    <div class="w-full h-48 flex items-center justify-center text-4xl font-light opacity-20">
+                        [이미지]
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-light mb-3">React 할일 관리 앱</h3>
+                        <p class="text-sm leading-relaxed font-light mb-6 opacity-70">
+                            React와 Tailwind CSS를 사용한 현대적인 할일 관리 애플리케이션입니다. 실시간 데이터 처리 기능을 포함합니다.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#" class="btn-outline text-xs">GitHub</a>
+                            <a href="#" class="btn-outline text-xs">Live</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="project-card p-0 rounded-lg overflow-hidden">
+                    <div class="w-full h-48 flex items-center justify-center text-4xl font-light opacity-20">
+                        [이미지]
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-light mb-3">날씨 앱</h3>
+                        <p class="text-sm leading-relaxed font-light mb-6 opacity-70">
+                            Open Weather API를 활용한 실시간 날씨 정보 조회 앱입니다. 위치 기반 서비스와 아름다운 UI를 제공합니다.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#" class="btn-outline text-xs">GitHub</a>
+                            <a href="#" class="btn-outline text-xs">Live</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="project-card p-0 rounded-lg overflow-hidden">
+                    <div class="w-full h-48 flex items-center justify-center text-4xl font-light opacity-20">
+                        [이미지]
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-light mb-3">전자상거래 플랫폼</h3>
+                        <p class="text-sm leading-relaxed font-light mb-6 opacity-70">
+                            고급 필터링, 장바구니 기능, 결제 시스템이 포함된 풀스택 전자상거래 솔루션입니다.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#" class="btn-outline text-xs">GitHub</a>
+                            <a href="#" class="btn-outline text-xs">Live</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-5 gap-8 md:gap-12">
+                <!-- Section title -->
+                <div class="col-span-2">
+                    <div class="relative">
+                        <div class="section-number">05</div>
+                        <h2 class="text-3xl md:text-4xl font-light -mt-12 relative z-10">연락처</h2>
+                    </div>
+                </div>
+
+                <!-- Contact info -->
+                <div class="col-span-3">
+                    <p class="text-lg leading-relaxed font-light mb-8">
+                        프로젝트나 협업에 대해 이야기하고 싶으신가요? 저에게 연락해주세요!
+                    </p>
+                    <div class="flex flex-col gap-4">
+                        <a href="mailto:hong@example.com" class="text-base font-light hover:opacity-60 transition-opacity">
+                            📧 hong@example.com
+                        </a>
+                        <a href="https://github.com/honggildong" target="_blank" rel="noopener noreferrer" class="text-base font-light hover:opacity-60 transition-opacity">
+                            🐙 GitHub / honggildong
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-opacity-20 border-current py-8 px-4 md:px-8" style="background-color: #111; color: #888;">
+        <div class="max-w-7xl mx-auto text-center text-sm font-light">
+            <p>&copy; 2026 홍길동. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar background on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll behavior for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

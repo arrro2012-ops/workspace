@@ -1,0 +1,7 @@
+{
+    "editor.multiCursorPaste": "full",
+    "editor.pasteAs.enabled": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.ignoreBracketedPasteMode": false,
+    "editor.pasteAs.preferences": []
+}

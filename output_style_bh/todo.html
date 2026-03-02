@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투두 리스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .todo-item:hover {
+            background: #f0f0f0;
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .todo-text {
+            flex: 1;
+            color: #333;
+            font-size: 16px;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            padding: 6px 12px;
+            background: #ff6b6b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .delete-btn:hover {
+            background: #ee5a52;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 투두 리스트</h1>
+
+        <div class="input-group">
+            <input
+                type="text"
+                id="todoInput"
+                placeholder="새로운 투두를 입력하세요..."
+                autocomplete="off"
+            >
+            <button onclick="addTodo()">추가</button>
+        </div>
+
+        <ul class="todo-list" id="todoList"></ul>
+        <div class="empty-state" id="emptyState">아직 투두가 없습니다 🎯</div>
+    </div>
+
+    <script>
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+        const emptyState = document.getElementById('emptyState');
+
+        // 로컬스토리지에서 투두 불러오기
+        function loadTodos() {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.forEach(todo => renderTodo(todo.text, todo.completed, todo.id));
+            updateEmptyState();
+        }
+
+        // 투두 추가
+        function addTodo() {
+            const text = todoInput.value.trim();
+            if (text === '') {
+                alert('투두를 입력해주세요!');
+                return;
+            }
+
+            const id = Date.now();
+            const todo = { id, text, completed: false };
+
+            saveTodo(todo);
+            renderTodo(text, false, id);
+            todoInput.value = '';
+            todoInput.focus();
+            updateEmptyState();
+        }
+
+        // 투두 렌더링
+        function renderTodo(text, completed, id) {
+            const li = document.createElement('li');
+            li.className = 'todo-item' + (completed ? ' completed' : '');
+            li.id = 'todo-' + id;
+
+            li.innerHTML = `
+                <input
+                    type="checkbox"
+                    ${completed ? 'checked' : ''}
+                    onchange="toggleTodo(${id})"
+                >
+                <span class="todo-text">${escapeHtml(text)}</span>
+                <button class="delete-btn" onclick="deleteTodo(${id})">삭제</button>
+            `;
+
+            todoList.appendChild(li);
+        }
+
+        // 투두 완료/미완료 토글
+        function toggleTodo(id) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                todo.completed = !todo.completed;
+                localStorage.setItem('todos', JSON.stringify(todos));
+
+                const element = document.getElementById('todo-' + id);
+                element.classList.toggle('completed');
+            }
+        }
+
+        // 투두 삭제
+        function deleteTodo(id) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            const filtered = todos.filter(t => t.id !== id);
+            localStorage.setItem('todos', JSON.stringify(filtered));
+
+            const element = document.getElementById('todo-' + id);
+            element.remove();
+            updateEmptyState();
+        }
+
+        // 로컬스토리지에 저장
+        function saveTodo(todo) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.push(todo);
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        // 빈 상태 업데이트
+        function updateEmptyState() {
+            const hasTodos = todoList.children.length > 0;
+            emptyState.style.display = hasTodos ? 'none' : 'block';
+        }
+
+        // XSS 방지
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 엔터키로 추가
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+        // 초기 로드
+        loadTodos();
+    </script>
+</body>
+</html>
